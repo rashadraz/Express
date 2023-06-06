@@ -3,16 +3,23 @@ const express = require("express");
 // const { init } = require("./dbconfig")
 const app = express();
 // init()
-app.use(express.json());
+
 
 const { registerValidator } = require("./validators/registerValidator");
 const { HomeController } = require("./controllers/HomeController");
+const { loginValidator } = require("./validators/loginValidator");
+const userRouter = require("./routes/userroutes");
+
+//router
+app.use(express.json());
+app.use("/user",userRouter)
 
 app.get("/", (req, res) => {
 	res.send({ message: "HelloWorld!!!!!!" });
 });
 
 app.post("/register", registerValidator, HomeController.register);
+app.post("/login", loginValidator, HomeController.login);
 
 app.post("/user", (req, res) => {
 	const body = req.body;
